@@ -5,7 +5,7 @@ const apiRouter = require('./api');
 const morgan = require('morgan');
 const { client } = require('./db');
 require('dotenv').config();
-console.log('from server', process.env.JWT_SECRET);
+
 
 
 server.use(morgan('dev'));

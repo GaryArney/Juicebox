@@ -8,7 +8,7 @@ const { createUser } = require('../db');
 
 
 
-console.log('from users', process.env.JWT_SECRET);
+
 
 const token = jwt.sign({ id: 1, username: 'albert'}, process.env.JWT_SECRET);
 token;

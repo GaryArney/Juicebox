@@ -9,7 +9,7 @@ require('dotenv').config();
 const { getUserById } = require('../db');
 const { JWT_SECRET } = process.env;                                                             //importing files
 
-console.log('from api index', process.env.JWT_SECRET);
+
 apiRouter.use(async (req, res, next) => {                                                   //function to route routers, async so program doesn't wait for it
     const prefix = 'Bearer ';                                                           //this will be the token prefix that will be sliced, space included
     const auth = req.header('Authorization');                                            //this is requesting the header to send the authorization
