@@ -7,37 +7,37 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 const { getUserById } = require('../db');
-const { JWT_SECRET } = process.env;                                                             //importing files
+const { JWT_SECRET } = process.env;
 
 
-apiRouter.use(async (req, res, next) => {                                                   //function to route routers, async so program doesn't wait for it
-    const prefix = 'Bearer ';                                                           //this will be the token prefix that will be sliced, space included
-    const auth = req.header('Authorization');                                            //this is requesting the header to send the authorization
+apiRouter.use(async (req, res, next) => {
+    const prefix = 'Bearer ';
+    const auth = req.header('Authorization');
 
-    if (!auth) {                                                                        //if there is no authorization header, move on
-        next();                                                                         //moves on
-    } else if (auth.startsWith(prefix)) {                                               //otherwise, if auth starts with bearer  , do below
-        const token = auth.slice(prefix.length);                                        //assigns token with the bearer sliced off, leaving only token
+    if (!auth) {
+        next();
+    } else if (auth.startsWith(prefix)) {
+        const token = auth.slice(prefix.length);
 
-        try {                                                                           
-            const { id } = jwt.verify(token, JWT_SECRET);                              //assigns an object called id to the jwt verify function
+        try {
+            const { id } = jwt.verify(token, JWT_SECRET);
 
-            if (id) {                                                               //if that id is true, 
-                req.user = await getUserById(id);                                   //request the imported function getuserbyid with the id as an arguement
-                next();                                                         //move on
+            if (id) {
+                req.user = await getUserById(id);
+                next();
             }
-        } catch ({ name, message }) {                                             //
+        } catch ({ name, message }) {
             next({ name, message });
         }
-    }   else {
+    } else {
         next({
             name: 'AuthorizationHeaderError',
-            message: `Authorization token must start with ${ prefix }`
+            message: `Authorization token must start with ${prefix}`
         });
     }
 });
 
-apiRouter.use((req, res, next) => {                                                 //THIS FINALLY WORKED
+apiRouter.use((req, res, next) => {                                                 
 
     if (req.user) {
         console.log("User is set:", req.user);
@@ -53,13 +53,13 @@ apiRouter.use('/tags', tagsRouter);
 
 
 apiRouter.use((error, req, res, next) => {
-    console.log('start');
+
     res.send({
-      name: error.name,
-      message: error.message
+        name: error.name,
+        message: error.message
     });
-    console.log('end', error.message);
-  });
+    console.log(error.message);
+});
 
 
 

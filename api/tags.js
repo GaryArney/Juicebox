@@ -8,30 +8,31 @@ tagsRouter.use((req, res, next) => {
 
   next();
 });
-//starting tagsRouter section, everything works up to this point.
-tagsRouter.get('/', async (req, res) => {
-    const tags = await getAllTags();
 
-    res.send({
-        tags
-    });
+tagsRouter.get('/', async (req, res) => {
+  const tags = await getAllTags();
+
+  res.send({
+    tags
+  });
 });
 
 tagsRouter.get('/:tagName/posts', async (req, res, next) => {
   const tagName = req.params.tagName;
-console.log('first tagname log', tagName);
+  console.log('first tagname log', tagName);
 
   try {
     const posts = await getPostsByTagName(tagName)
 
-   res.send({
-       posts: posts
-      })
-      console.log("Posts should populate:", posts);
+    res.send({
+      posts: posts
+    })
+    console.log("Posts should populate:", posts);
   } catch ({ name, message }) {
-      next({ 
-        name: "didn't get the posts",
-        message: "Not great" });
+    next({
+      name: "didn't get the posts",
+      message: "Not great"
+    });
   }
 });
 

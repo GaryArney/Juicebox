@@ -7,10 +7,7 @@ const jwt = require('jsonwebtoken');
 const { createUser } = require('../db');
 
 
-
-
-
-const token = jwt.sign({ id: 1, username: 'albert'}, process.env.JWT_SECRET);
+const token = jwt.sign({ id: 1, username: 'albert' }, process.env.JWT_SECRET);
 token;
 const recoveredData = jwt.verify(token, process.env.JWT_SECRET);
 recoveredData;
@@ -23,11 +20,11 @@ usersRouter.use((req, res, next) => {
 });
 
 usersRouter.get('/', async (req, res) => {
-    const users = await getAllUsers();
+  const users = await getAllUsers();
 
-    res.send({
-        users
-    });
+  res.send({
+    users
+  });
 });
 
 usersRouter.post('/register', async (req, res, next) => {
@@ -52,15 +49,15 @@ usersRouter.post('/register', async (req, res, next) => {
 
     const token = jwt.sign({
       id: user.id,
-      username 
+      username
     }, process.env.JWT_SECRET, {
       expiresIn: '1w'
     });
 
-    res.send({ message: "thank you for signing up", token});
-    } catch ({ name, message }) {
-      next({ name, message })
-    }
+    res.send({ message: "thank you for signing up", token });
+  } catch ({ name, message }) {
+    next({ name, message })
+  }
 });
 
 
@@ -78,17 +75,17 @@ usersRouter.post('/login', async (req, res, next) => {
     const user = await getUserByUserName(username);
 
     if (user && user.password == password) {
-      res.send({ message: "you're logged in!", "token": token});   //this seems to work, so far so good. USER SET WORKS AS WELL....FINALLY.
+      res.send({ message: "you're logged in!", "token": token });
     } else {
       next({
         name: 'IncorrectCredentialsError',
         message: 'Username or password is incorrect'
       });
-    } 
-    } catch(error) {
-      console.log(error);
-      next(error);
     }
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
 });
 
 module.exports = usersRouter;
